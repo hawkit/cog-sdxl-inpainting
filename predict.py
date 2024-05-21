@@ -117,9 +117,7 @@ class Predictor(BasePredictor):
         self.pipe.scheduler = SCHEDULERS[scheduler].from_config(self.pipe.scheduler.config)
 
         input_image = self.scale_down_image(image, 1024)
-        pil_mask = Image.open(mask)
-        # Assume mask is same size as input image
-        mask_image = pil_mask.resize((input_image.width, input_image.height))
+        mask_image = self.scale_down_image(mask, 1024)
 
         result = self.pipe(
             prompt=[prompt] * num_outputs if prompt is not None else None,
